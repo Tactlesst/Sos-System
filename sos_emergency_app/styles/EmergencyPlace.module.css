@@ -1,0 +1,68 @@
+/* styles/EmergencyPlace.module.css */
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .main {
+    display: flex;
+    flex-grow: 1;
+    padding: 20px;
+  }
+  
+  .contentArea {
+    display: flex;
+    flex-direction: column;
+    flex: 2; /* Adjust as needed */
+    margin-right: 20px;
+  }
+  
+  .mapContainer {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .location {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #555;
+  }
+  
+  .controls {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .emergencyType {
+    margin-bottom: 10px;
+  }
+  
+  .objective {
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .sosButton {
+    padding: 10px 15px;
+    background-color: #f00;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .sosConsole {
+    flex: 1; /* Adjust as needed */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    overflow-y: auto;
+  }
+  
+  .sosLogItem {
+    border-bottom: 1px solid #eee;
+    padding: 8px 0;
+  }

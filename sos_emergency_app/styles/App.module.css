@@ -1,0 +1,14 @@
+/* styles/App.module.css */
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .appName {
+    text-align: center;
+    padding: 1rem 0;
+    background-color: #f0f0f0; /* Or your desired background color */
+    margin-bottom: 2rem; /* Add spacing below the app name */
+    font-size: 1.5rem; /* Adjust font size as needed */
+  }

@@ -10,9 +10,22 @@ export default function RegisterModal({ onClose }) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [dob, setDob] = useState('');
   const [terms, setTerms] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setError(null);
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    if (!terms) {
+      setError("Please agree to the terms and conditions.");
+      return;
+    }
+
     console.log('Register:', { firstName, lastName, phone, password, confirmPassword, dob, terms });
     onClose();
   };
@@ -24,6 +37,7 @@ export default function RegisterModal({ onClose }) {
           <Image src="/images/Dmrro.png" alt="Dmrro Logo" width={80} height={80} />
         </div>
         <h2>Create an account</h2>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
         <form onSubmit={handleSubmit}>
           <input type="text" placeholder="First name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
           <input type="text" placeholder="Last name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
@@ -38,11 +52,11 @@ export default function RegisterModal({ onClose }) {
             Agree with terms and condition
           </label>
           <button
-          type="submit"
-          style={{ backgroundColor: '#e53935', color: 'white', border: 'none', padding: '0.8rem', borderRadius: '8px', cursor: 'pointer' }}
-        >
-          Register
-        </button>
+            type="submit"
+            style={{ backgroundColor: '#e53935', color: 'white', border: 'none', padding: '0.8rem', borderRadius: '8px', cursor: 'pointer' }}
+          >
+            Register
+          </button>
         </form>
         <button onClick={onClose}>Close</button>
       </div>

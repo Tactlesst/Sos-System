@@ -12,7 +12,7 @@ export default function RegisterModal({ onClose }) {
   const [terms, setTerms] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
 
@@ -26,8 +26,33 @@ export default function RegisterModal({ onClose }) {
       return;
     }
 
-    console.log('Register:', { firstName, lastName, phone, password, confirmPassword, dob, terms });
-    onClose();
+    try {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          phone,
+          password,
+          dob,
+          terms,
+        }),
+      });
+
+      if (response.ok) {
+        console.log('User registered successfully');
+        onClose();
+      } else {
+        const errorData = await response.json();
+        setError(errorData.error || 'Failed to register');
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
+      setError('An unexpected error occurred.');
+    }
   };
 
   return (

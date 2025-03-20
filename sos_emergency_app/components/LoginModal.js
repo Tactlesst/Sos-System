@@ -1,60 +1,86 @@
-import { useState } from 'react';
-import styles from '../styles/LoginModal.module.css';
-import Image from 'next/image';
+// components/LoginModal.js
 
-export default function LoginModal({ onClose, onLoginSuccess }) { // Added onLoginSuccess prop
-  const [phone, setPhone] = useState('+63');
+import { useState } from 'react';
+import styles from '../styles/Modal.module.css';
+import { useRouter } from 'next/router'; // Import useRouter
+
+export default function LoginModal({ onClose }) {
+  const [phoneCountryCode, setPhoneCountryCode] = useState('+63'); // Default to PH
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
-  const [remember, setRemember] = useState(false);
-  const [error, setError] = useState(null); // Added error state
+  const router = useRouter(); // Initialize router
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); // Clear previous errors
 
     try {
-      const response = await fetch('/api/login', { // Changed to /api/login
+      const response = await fetch('/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ phone, password }),
+        body: JSON.stringify({
+          phone: `${phoneCountryCode}${phoneNumber}`,
+          password,
+        }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        const data = await response.json(); // Parse the JSON response
-        console.log('Login successful:', data);
-        onLoginSuccess(data.user); // Pass user data to parent component
-        onClose();
+        alert('Login successful!');
+        onClose(); // Close the modal
+        // Redirect to a dashboard or main app page after successful login
+        router.push('/dashboard'); // Example: Redirect to /dashboard
       } else {
-        const errorData = await response.json();
-        setError(errorData.error || 'Login failed. Please check your credentials.');
+        alert(data.message || 'Login failed.');
       }
-    } catch (err) {
-      console.error('Login error:', err);
-      setError('An unexpected error occurred.');
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('An error occurred during login.');
     }
   };
 
   return (
     <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
-        <div className={styles.logoContainer}>
-          <Image src="/images/Dmrro.png" alt="Dmrro Logo" width={80} height={80} />
-        </div>
-        <h2>Sign in to your account</h2>
-        {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error message */}
-        <form onSubmit={handleSubmit}>
-          <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
-          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <label className={styles.rememberLabel}>
-            <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} />
-            Remember me
-          </label>
-          <button type="submit" className={styles.loginButton}>Log In</button>
-          <p className={styles.forgotPassword}>Forgot password?</p>
+      <div className={styles.modal}>
+        <h2 className={styles.modalTitle}>Log In</h2>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <div className={styles.phoneInput}>
+            <select
+              className={styles.countryCode}
+              value={phoneCountryCode}
+              onChange={(e) => setPhoneCountryCode(e.target.value)}
+            >
+              <option value="+63">PH (+63)</option>
+              {/* Add more country codes as needed */}
+              <option value="+1">US (+1)</option>
+              <option value="+44">UK (+44)</option>
+            </select>
+            <input
+              type="tel"
+              placeholder="Phone Number"
+              className={styles.input}
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              required
+            />
+          </div>
+          <input
+            type="password"
+            placeholder="Password"
+            className={styles.input}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit" className={styles.submitButton}>
+            Log In
+          </button>
         </form>
-        <button onClick={onClose}>Close</button>
+        <button className={styles.closeButton} onClick={onClose}>
+          Close
+        </button>
       </div>
     </div>
   );

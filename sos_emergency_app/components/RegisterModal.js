@@ -1,33 +1,27 @@
+// components/RegisterModal.js
+
 import { useState } from 'react';
-import styles from '../styles/RegisterModal.module.css';
-import Image from 'next/image';
+import styles from '../styles/Modal.module.css';
 
 export default function RegisterModal({ onClose }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [phone, setPhone] = useState('+63');
+  const [phoneCountryCode, setPhoneCountryCode] = useState('+63'); // Default to PH
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [dob, setDob] = useState('');
-  const [terms, setTerms] = useState(false);
-  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-
-    if (!terms) {
-      setError("Please agree to the terms and conditions.");
+      alert("Passwords don't match.");
       return;
     }
 
     try {
-      const response = await fetch('/api/register', {
+      const response = await fetch('/api/register', { // Create /api/register route
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,55 +29,96 @@ export default function RegisterModal({ onClose }) {
         body: JSON.stringify({
           firstName,
           lastName,
-          phone,
+          phone: `${phoneCountryCode}${phoneNumber}`,
           password,
           dob,
-          terms,
         }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        console.log('User registered successfully');
-        onClose();
+        alert('Registration successful!');
+        onClose(); // Close the modal
       } else {
-        const errorData = await response.json();
-        setError(errorData.error || 'Failed to register');
+        alert(data.message || 'Registration failed.');
       }
     } catch (error) {
-      console.error('Error during registration:', error);
-      setError('An unexpected error occurred.');
+      console.error('Registration error:', error);
+      alert('An error occurred during registration.');
     }
   };
 
   return (
     <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
-        <div className={styles.logoContainer}>
-          <Image src="/images/Dmrro.png" alt="Dmrro Logo" width={80} height={80} />
-        </div>
-        <h2>Create an account</h2>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <input type="text" placeholder="First name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-          <input type="text" placeholder="Last name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-          <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
-          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <input type="password" placeholder="Confirm password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-          <div className={styles.dobContainer}>
-            <input type="date" value={dob} onChange={(e) => setDob(e.target.value)} />
+      <div className={styles.modal}>
+        <h2 className={styles.modalTitle}>Register</h2>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="First Name"
+            className={styles.input}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Last Name"
+            className={styles.input}
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            required
+          />
+          <div className={styles.phoneInput}>
+            <select
+              className={styles.countryCode}
+              value={phoneCountryCode}
+              onChange={(e) => setPhoneCountryCode(e.target.value)}
+            >
+              <option value="+63">PH (+63)</option>
+              {/* Add more country codes as needed */}
+              <option value="+1">US (+1)</option>
+              <option value="+44">UK (+44)</option>
+            </select>
+            <input
+              type="tel"
+              placeholder="Phone Number"
+              className={styles.input}
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              required
+            />
           </div>
-          <label className={styles.termsLabel}>
-            <input type="checkbox" checked={terms} onChange={(e) => setTerms(e.target.checked)} />
-            Agree with terms and condition
-          </label>
-          <button
-            type="submit"
-            style={{ backgroundColor: '#e53935', color: 'white', border: 'none', padding: '0.8rem', borderRadius: '8px', cursor: 'pointer' }}
-          >
+          <input
+            type="password"
+            placeholder="Password"
+            className={styles.input}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            className={styles.input}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+          <input
+            type="date"
+            className={styles.input}
+            value={dob}
+            onChange={(e) => setDob(e.target.value)}
+          />
+          <button type="submit" className={styles.submitButton}>
             Register
           </button>
         </form>
-        <button onClick={onClose}>Close</button>
+        <button className={styles.closeButton} onClick={onClose}>
+          Close
+        </button>
       </div>
     </div>
   );

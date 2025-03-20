@@ -1,0 +1,196 @@
+.container {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Use min-height to allow content to expand */
+    padding: 20px;
+    box-sizing: border-box;
+    max-width: 600px; /* Limit width for larger screens */
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px; /* Reduced margin */
+  }
+  
+  .greeting {
+    font-size: 1em; /* Reduced font size */
+    font-weight: bold;
+  }
+  
+  .notification {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .emergencyMessage {
+    margin-bottom: 20px; /* Reduced margin */
+  }
+  
+  .sosButton {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px; /* Reduced margin */
+  }
+  
+  .locationReminder {
+    background-color: #e0f7fa;
+    padding: 8px; /* Reduced padding */
+    margin: 8px auto;
+    border-radius: 5px;
+    color: #00838f;
+    font-size: 0.8em; /* Reduced font size */
+  }
+  
+  .sosCircle {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background-color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1em;
+  }
+  
+  .emergencyTypes {
+    margin-bottom: 20px; /* Reduced margin */
+  }
+  
+  .typeButtons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 8px; /* Reduced margin */
+  }
+  
+  .typeButton {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 6px 10px; /* Reduced padding */
+    margin: 2px; /* Reduced margin */
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 0.8em; /* Reduced font size */
+  }
+  
+  .typeButton .icon {
+    margin-right: 3px; /* Reduced margin */
+  }
+  
+  .more {
+    color: blue;
+    font-size: 0.8em; /* Reduced font size */
+  }
+  
+  .address {
+    background-color: #f0f0f0;
+    padding: 10px; /* Reduced padding */
+    border-radius: 10px;
+    margin-bottom: 10px; /* Reduced margin */
+  }
+  
+  .addressText {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8em; /* Reduced font size */
+  }
+  
+  .mapIcon {
+    display: flex;
+    align-items: center;
+  }
+  
+  .bottomNav {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    background: linear-gradient(to bottom, #eee, #f00);
+    border-radius: 20px;
+    margin-top: auto;
+  }
+  
+  .navItem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em; /* Reduced icon size */
+  }
+  
+  .message {
+    background-color: #e0f7fa;
+    padding: 8px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+    text-align: center;
+    color: #00838f;
+    font-size: 0.8em; /* Reduced font size */
+  }
+  
+  /* Desktop Styles */
+  @media (min-width: 768px) {
+    .container {
+      padding: 30px; /* Increased padding */
+    }
+  
+    .header {
+      margin-bottom: 30px; /* Adjusted margin */
+    }
+  
+    .emergencyMessage {
+      margin-bottom: 30px; /* Adjusted margin */
+    }
+  
+    .sosButton {
+      margin-bottom: 40px; /* Adjusted margin */
+    }
+  
+    .emergencyTypes {
+      margin-bottom: 30px; /* Adjusted margin */
+    }
+  
+    .address {
+      margin-bottom: 30px; /* Adjusted margin */
+    }
+  
+    .sosCircle {
+      width: 150px; /* Increased size */
+      height: 150px; /* Increased size */
+      font-size: 1.2em; /* Increased font size */
+    }
+  
+    .typeButton {
+      padding: 8px 12px; /* Increased padding */
+      margin: 3px; /* Increased margin */
+      font-size: 0.9em; /* Increased font size */
+    }
+  
+    .addressText {
+      font-size: 0.9em; /* Increased font size */
+    }
+  
+    .greeting {
+      font-size: 1.2em; /* Increased font size */
+    }
+  
+    .navItem {
+      font-size: 1.5em; /* Increased icon size */
+    }
+  
+    .message {
+      padding: 10px; /* Increased padding */
+      margin-bottom: 10px; /* Increased margin */
+      font-size: 0.9em; /* Increased font size */
+    }
+  }

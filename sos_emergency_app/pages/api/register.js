@@ -1,37 +1,48 @@
-import pool from '../../lib/db';
-import bcrypt from 'bcrypt'; // Import bcrypt for password hashing
+// pages/api/register.js
+
+import mysql from 'mysql2/promise';
+import bcrypt from 'bcrypt';
+
+const pool = mysql.createPool({
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
+});
 
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
-    try {
-      const { firstName, lastName, phone, password, dob } = req.body; // Removed terms
+  if (req.method !== 'POST') {
+    return res.status(405).end();
+  }
 
-      // Validate input (add more validation as needed)
-      if (!firstName || !lastName || !phone || !password || !dob) { // Removed terms
-        return res.status(400).json({ error: 'Missing required fields' });
-      }
+  const { firstName, lastName, phone, dob, password } = req.body;
 
-      if (password.length < 8) { // Example password length validation
-        return res.status(400).json({ error: 'Password must be at least 8 characters long.' });
-      }
+  // Check if all required fields are provided
+  if (!firstName || !lastName || !phone || !password) { // dob is optional
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
 
-      // Hash the password
-      const hashedPassword = await bcrypt.hash(password, 10); // 10 is the salt rounds
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-      const [results] = await pool.execute(
-        'INSERT INTO users (firstName, lastName, phone, password, dob) VALUES (?, ?, ?, ?, ?)', // Removed terms
-        [firstName, lastName, phone, hashedPassword, dob] // Removed terms
-      );
+    // Check if phone number already exists
+    const [existingUsers] = await pool.execute(
+      'SELECT * FROM users WHERE phone = ?',
+      [phone]
+    );
 
-      res.status(200).json({ message: 'User registered successfully', results });
-    } catch (error) {
-      console.error(error);
-      if (error.code === 'ER_DUP_ENTRY') {
-        return res.status(409).json({ error: 'Phone number already exists' }); // Handle duplicate entries.
-      }
-      res.status(500).json({ error: 'Failed to register user' });
+    if (existingUsers.length > 0) {
+      return res.status(409).json({ error: 'Phone number already registered' }); // 409 Conflict
     }
-  } else {
-    res.status(405).json({ error: 'Method Not Allowed' });
+
+    await pool.execute(
+      'INSERT INTO users (firstName, lastName, phone, dob, password) VALUES (?, ?, ?, ?, ?)',
+      [firstName, lastName, phone, dob, hashedPassword]
+    );
+
+    res.status(201).json({ message: 'User registered successfully' });
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 }

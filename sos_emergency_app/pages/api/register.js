@@ -1,25 +1,15 @@
-// pages/api/register.js
-
-import mysql from 'mysql2/promise';
-import bcrypt from 'bcrypt';
-
-const pool = mysql.createPool({
-  host: process.env.MYSQL_HOST,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE,
-});
+import pool from "../../lib/db"; // Reuse the database connection
+import bcrypt from "bcrypt";
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).end();
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method Not Allowed" });
   }
 
   const { firstName, lastName, phone, dob, password } = req.body;
 
-  // Check if all required fields are provided
-  if (!firstName || !lastName || !phone || !password) { // dob is optional
-    return res.status(400).json({ error: 'Missing required fields' });
+  if (!firstName || !lastName || !phone || !password) {
+    return res.status(400).json({ error: "Missing required fields" });
   }
 
   try {
@@ -27,22 +17,23 @@ export default async function handler(req, res) {
 
     // Check if phone number already exists
     const [existingUsers] = await pool.execute(
-      'SELECT * FROM users WHERE phone = ?',
+      "SELECT id FROM users WHERE phone = ?",
       [phone]
     );
 
     if (existingUsers.length > 0) {
-      return res.status(409).json({ error: 'Phone number already registered' }); // 409 Conflict
+      return res.status(409).json({ error: "Phone number already registered" });
     }
 
-    await pool.execute(
-      'INSERT INTO users (firstName, lastName, phone, dob, password) VALUES (?, ?, ?, ?, ?)',
+    // Insert new user
+    const [result] = await pool.execute(
+      "INSERT INTO users (firstName, lastName, phone, dob, password) VALUES (?, ?, ?, ?, ?)",
       [firstName, lastName, phone, dob, hashedPassword]
     );
 
-    res.status(201).json({ message: 'User registered successfully' });
+    return res.status(201).json({ message: "User registered successfully", userId: result.insertId });
   } catch (error) {
-    console.error('Registration error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Registration error:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 }

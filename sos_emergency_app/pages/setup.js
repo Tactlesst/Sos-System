@@ -1,5 +1,4 @@
 // pages/setup.js
-
 import { useState } from 'react';
 import LoginModal from '../components/LoginModal';
 import RegisterModal from '../components/RegisterModal';

@@ -1,70 +1,41 @@
 // pages/dashboard.js
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import styles from "../styles/Dashboard.module.css"; // Ensure this file exists
-import Cookies from "js-cookie"; // Import js-cookie to handle cookies
+import Cookies from "js-cookie";
 
 export default function Dashboard() {
-  const router = useRouter();
   const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
-    const fetchUser = async () => {
-      setIsLoading(true);
-      try {
-        const authToken = Cookies.get("authToken");
-        console.log("Auth Token:", authToken); // Debugging  
+    const authToken = Cookies.get("authToken");
+    if (!authToken) {
+      router.push("/"); // Redirect to login page if no token
+      return;
+    }
 
-        if (!authToken) {
-          console.warn("No token found, redirecting to /setup");
-          router.push("/setup");
-          return;
-        }
-
-        const response = await fetch("/api/user", {
-          headers: {
-            Authorization: `Bearer ${authToken}`, // Send token in header
-          },
-        });
-
-        console.log("Response Status:", response.status); // Debugging  
-
-        if (response.ok) {
-          const userData = await response.json();
-          console.log("User Data:", userData); // Debugging  
-          setUser(userData);
+    // Fetch user data
+    fetch("/api/user", {
+      method: "GET",
+      headers: { Authorization: `Bearer ${authToken}` },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          router.push("/");
         } else {
-          console.warn("Invalid token, redirecting to /setup");
-          Cookies.remove("authToken"); // Remove invalid token
-          router.push("/setup");
+          setUser(data);
         }
-      } catch (error) {
-        console.error("Error fetching user:", error);
-        router.push("/setup");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchUser();
-  }, [router]);
-
-  if (isLoading) {
-    return <div>Loading...</div>; // Or a spinner
-  }
-
-  if (!user) {
-    return null; // User not loaded or redirected
-  }
+      });
+  }, []);
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>
-        Welcome, {user.firstName} {user.lastName}!
-      </h1>
-      <p className={styles.phone}>Phone: {user.phone}</p>
-      {/* Add more user details or dashboard components here */}
+    <div>
+      <h1>Welcome, {user?.firstName} {user?.lastName}!</h1>
+      <p>Your Phone: {user?.phone}</p>
+      <button onClick={() => { Cookies.remove("authToken"); router.push("/"); }}>
+        Logout
+      </button>
     </div>
   );
 }

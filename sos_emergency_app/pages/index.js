@@ -1,60 +1,19 @@
-// pages/index.js - Smart SOS Emergency Alert App (Next.js)
-
-/**
- * @fileoverview Home page for the Smart SOS Emergency Alert App.
- * Initializes the application and sets up core functionalities.
- * @author
- * @version 1.0.0
- */
-
-import Head from 'next/head';
-import Image from 'next/image';
-import styles from '../styles/Home.module.css'; // Import your styles
-import { useRouter } from 'next/router'; // Import useRouter hook
+import { useRouter } from "next/router";
 
 export default function Home() {
   const router = useRouter();
 
-  const handleGetStarted = () => {
-    // Navigate to the next page or component (e.g., setup or main app)
-    router.push('/setup'); // Assuming you have a /setup page
-  };
-
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Smart SOS - Emergency Alert</title>
-        <meta name="description" content="Smart SOS Emergency Alert App" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <h1 className="text-3xl font-bold mb-6">Welcome to My Next.js App</h1>
+      <p className="text-gray-600 mb-4">Click below to log in or register.</p>
 
-      <main className={styles.main}>
-        <div className={styles.content}>
-          <h1 className={styles.appName}>
-            Smart SOS
-          </h1>
-
-          <p className={styles.description}>
-            An emergency alert app
-          </p>
-
-          <div className={styles.iconContainer}>
-            <Image 
-              src="/images/ambulance-icon.png" // Replace with your image path
-              alt="Ambulance"
-              width={200} // Adjust as needed
-              height={150} // Adjust as needed
-              layout="responsive" // Make image responsive
-            />
-          </div>
-
-          <div className={styles.buttonContainer}>
-            <button className={styles.button} onClick={handleGetStarted}>
-              LET'S GET STARTED
-            </button>
-          </div>
-        </div>
-      </main>
+      <button
+        onClick={() => router.push("/auth")}
+        className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition"
+      >
+        Go to Login/Register
+      </button>
     </div>
   );
 }

@@ -1,41 +1,78 @@
-// pages/dashboard.js
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import Cookies from "js-cookie";
+import { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
-  const router = useRouter();
+
+  // Function to format the date of birth
+  const formatDateOfBirth = (dob) => {
+    const date = new Date(dob);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  };
 
   useEffect(() => {
-    const authToken = Cookies.get("authToken");
-    if (!authToken) {
-      router.push("/"); // Redirect to login page if no token
-      return;
-    }
+    const fetchUserData = async () => {
+      const token = localStorage.getItem('token');
+      const userId = localStorage.getItem('userId');
 
-    // Fetch user data
-    fetch("/api/user", {
-      method: "GET",
-      headers: { Authorization: `Bearer ${authToken}` },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) {
-          router.push("/");
-        } else {
-          setUser(data);
+      if (!token || !userId) {
+        window.location.href = '/';
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/user/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
         }
-      });
+
+        const data = await response.json();
+        setUser(data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        alert('Failed to fetch user data');
+        window.location.href = '/auth';
+      }
+    };
+
+    fetchUserData();
   }, []);
+
+  const handleLogout = () => {
+    const confirmLogout = window.confirm('Are you sure you want to log out?');
+    if (confirmLogout) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('userId');
+      toast.success('Logged out successfully!');
+      setTimeout(() => {
+        window.location.href = '/auth';
+      }, 2000); // Redirect after 2 seconds
+    }
+  };
+
+  if (!user) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div>
-      <h1>Welcome, {user?.firstName} {user?.lastName}!</h1>
-      <p>Your Phone: {user?.phone}</p>
-      <button onClick={() => { Cookies.remove("authToken"); router.push("/"); }}>
-        Logout
-      </button>
+      <h1>Dashboard</h1>
+      <p>Welcome, {user.firstName} {user.lastName}!</p>
+      <p>Phone: {user.phone}</p>
+      <p>Date of Birth: {formatDateOfBirth(user.dob)}</p>
+
+      <button onClick={handleLogout}>Logout</button>
+
+      {/* Toast Container */}
+      <ToastContainer />
     </div>
   );
 }

@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; // Add useEffect
+import { useRouter } from 'next/router'; // Add useRouter for redirection
 import styles from "../styles/Auth.module.css";
 
 export default function Auth({ onClose = () => {} }) {
-  const [isLogin, setIsLogin] = useState(true); // Toggle between login and registration
-  const [showForm, setShowForm] = useState(false); // Control whether to show the form or selection screen
+  const router = useRouter(); // Initialize the router
+  const [isLogin, setIsLogin] = useState(true);
+  const [showForm, setShowForm] = useState(false);
 
   // State for login form
   const [loginPhone, setLoginPhone] = useState('');
@@ -21,6 +23,16 @@ export default function Auth({ onClose = () => {} }) {
   const [regError, setRegError] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(false);
 
+  // Check if the user is already authenticated
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+
+    if (token && userId) {
+      router.push('/dashboard'); // Redirect to the dashboard if authenticated
+    }
+  }, [router]);
+
   // Handle login
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -34,10 +46,10 @@ export default function Auth({ onClose = () => {} }) {
     const data = await response.json();
 
     if (response.ok) {
-      // Store auth token in cookies and redirect to dashboard
+      // Store auth token in localStorage and redirect to dashboard
       localStorage.setItem('token', data.token);
       localStorage.setItem('userId', data.userId);
-      window.location.href = '/dashboard';
+      router.push('/dashboard'); // Use router.push for client-side navigation
     } else {
       setLoginError(data.error || 'Login failed');
     }

@@ -1,0 +1,57 @@
+/* styles/Layout.module.css */
+
+.container {
+  display: flex;
+  min-height: 100vh; /* Ensure full viewport height */
+}
+
+.mainContent {
+  flex: 1; /* Take up remaining space */
+  padding: 20px; /* Add some padding around the content */
+  background-color: #f8f9fa; /* Light background to match the image */
+  overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+/* Optional: Add styles to adjust mainContent based on the image's design */
+
+/* Example: If you want the content area to have some rounded corners */
+.mainContent {
+  border-radius: 8px;
+}
+
+/* Example: Add some shadow for depth */
+.mainContent {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Example: If you want to add some margin to the main content */
+.mainContent {
+  margin: 10px;
+}
+
+/* Example: If you want to style the content within mainContent, you can target specific elements */
+.mainContent h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.mainContent p {
+  line-height: 1.6;
+}
+
+/* Example: If you have cards or other containers within mainContent */
+.mainContent .card {
+  background-color: white; /* Light background for cards */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+/* Example: If you want to add a top bar to the mainContent */
+.mainContent .topBar {
+  background-color: white;
+  padding: 10px 20px;
+  border-bottom: 1px solid #dee2e6;
+  margin-bottom: 20px;
+}

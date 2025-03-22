@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import Layout from '../components/Layout'; // Import the Layout component
+import styles from '../styles/Sidebar.module.css'; // Import the CSS module
 export default function Dashboard() {
   const [user, setUser] = useState(null);
+  const router = useRouter();
 
-  // Function to format the date of birth
   const formatDateOfBirth = (dob) => {
     const date = new Date(dob);
     return date.toLocaleDateString('en-US', {
@@ -21,7 +23,7 @@ export default function Dashboard() {
       const userId = localStorage.getItem('userId');
 
       if (!token || !userId) {
-        window.location.href = '/';
+        router.push('/auth');
         return;
       }
 
@@ -38,41 +40,32 @@ export default function Dashboard() {
         setUser(data);
       } catch (error) {
         console.error('Error fetching user data:', error);
-        alert('Failed to fetch user data');
-        window.location.href = '/auth';
+        toast.error('Failed to fetch user data');
+        router.push('/auth');
       }
     };
 
     fetchUserData();
   }, []);
 
-  const handleLogout = () => {
-    const confirmLogout = window.confirm('Are you sure you want to log out?');
-    if (confirmLogout) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('userId');
-      toast.success('Logged out successfully!');
-      setTimeout(() => {
-        window.location.href = '/auth';
-      }, 2000); // Redirect after 2 seconds
-    }
-  };
+
 
   if (!user) {
-    return <p>Loading...</p>;
+    return
   }
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <p>Welcome, {user.firstName} {user.lastName}!</p>
-      <p>Phone: {user.phone}</p>
-      <p>Date of Birth: {formatDateOfBirth(user.dob)}</p>
+    <Layout>
+      <div>
+        <h1>Dashboard</h1>
+        <p>Welcome, {user.firstName} {user.lastName}!</p>
+        <p>Phone: {user.phone}</p>
+        <p>Date of Birth: {formatDateOfBirth(user.dob)}</p>
 
-      <button onClick={handleLogout}>Logout</button>
 
-      {/* Toast Container */}
-      <ToastContainer />
-    </div>
+        {/* Toast Container */}
+        <ToastContainer />
+      </div>
+    </Layout>
   );
 }

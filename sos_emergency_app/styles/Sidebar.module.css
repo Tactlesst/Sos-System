@@ -1,0 +1,68 @@
+.sidebar {
+    width: 250px; /* Adjust width as needed */
+    background-color: #f8f9fa; /* Light background like the image */
+    border-right: 1px solid #dee2e6; /* Light border */
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .logo {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .logoImage {
+    width: 100px; /* Adjust logo size */
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  .nav {
+    padding: 20px 0;
+  }
+  
+  .navList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .navItem {
+    margin-bottom: 10px;
+  }
+  
+  .link {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #343a40; /* Dark text color */
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .link:hover {
+    background-color: #e9ecef; /* Light hover background */
+  }
+  
+  .active {
+    background-color: #007bff; /* Blue active background */
+    color: white;
+  }
+  .logoutButton {
+    background-color: #e74c3c; /* Red color for logout button */
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .logoutButton:hover {
+    background-color: #c0392b; /* Darker red on hover */
+  }

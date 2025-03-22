@@ -17,3 +17,21 @@
   .phone {
     margin-bottom: 1rem;
   }
+  /* styles/Dashboard.module.css */
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Take full viewport height */
+  margin-left: 250px; /* Match sidebar width */
+}
+
+.loadingText {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.dashboardContent {
+  padding: 20px;
+}

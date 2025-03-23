@@ -27,7 +27,7 @@
   border: none;
   font-size: 20px;
   cursor: pointer;
-  z-index: 1001; /* Ensure the close button is on top */
+  z-index: 10011; /* Ensure the close button is on top */
 }
 
 .inputGroup {
@@ -117,4 +117,42 @@
   color: red;
   text-align: center;
   margin-bottom: 10px;
+}
+/* Selection Screen Styles */
+.selectionScreen {
+  text-align: center;
+  padding: 20px;
+}
+
+.welcomeTitle {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.welcomeSubtitle {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.selectionButton {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #e74c3c;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.selectionButton:hover {
+  background-color: #420902;
 }

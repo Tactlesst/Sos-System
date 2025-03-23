@@ -1,0 +1,10 @@
+.parentContainer {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .contentContainer {
+    flex: 1;
+    padding: 20px;
+    background-color: #f5f6fa;
+  }

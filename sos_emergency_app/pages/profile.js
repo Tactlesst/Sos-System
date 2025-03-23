@@ -1,71 +1,39 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router'; // Import useRouter
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Layout from '../components/Layout';
 
-
-export default function Profile() {
-  const [user, setUser] = useState(null);
+export default function Profile({ user }) {
+  const router = useRouter(); // Initialize router
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     phone: '',
     dob: '',
   });
-  const router = useRouter();
 
-  const formatDateForInput = (dob) => {
-    if (!dob) {
-      return ''; // Return an empty string if dob is missing or invalid
-    }
-
-    const date = new Date(dob);
-    if (isNaN(date.getTime())) {
-      return ''; // Return an empty string if the date is invalid
-    }
-
-    return date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
-  };
-
+  // Check authentication on component mount
   useEffect(() => {
-    const fetchUserData = async () => {
-      const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
 
-      if (!token || !userId) {
-        router.push('/auth');
-        return;
-      }
+    // If no token or userId, redirect to /auth
+    if (!token || !userId) {
+      router.push('/auth');
+    }
+  }, [router]);
 
-      try {
-        const response = await fetch(`/api/user/${userId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch user data');
-        }
-
-        const data = await response.json();
-        console.log('API Response:', data); // Log the API response
-
-        setUser(data);
-        setFormData({
-          firstName: data.firstName,
-          lastName: data.lastName,
-          phone: data.phone,
-          dob: formatDateForInput(data.dob), // Use the formatted date
-        });
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-        toast.error('Failed to fetch user data');
-        router.push('/auth');
-      }
-    };
-
-    fetchUserData();
-  }, []);
+  // Initialize formData when user data is available
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        phone: user.phone || '',
+        dob: user.dob ? new Date(user.dob).toISOString().split('T')[0] : '',
+      });
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -96,7 +64,6 @@ export default function Profile() {
       }
 
       const data = await response.json();
-      setUser(data);
       toast.success('Profile updated successfully!');
     } catch (error) {
       console.error('Error updating user data:', error);
@@ -104,12 +71,12 @@ export default function Profile() {
     }
   };
 
+  // Show loading state if user data is not yet available
   if (!user) {
-    return
+    return <p>Loading...</p>;
   }
 
   return (
-    <Layout>
     <div>
       <h1>Profile</h1>
       <form onSubmit={handleSubmit}>
@@ -152,6 +119,5 @@ export default function Profile() {
         <button type="submit">Update Profile</button>
       </form>
     </div>
-    </Layout>
   );
 }

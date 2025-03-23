@@ -27,8 +27,13 @@ export default async function handler(req, res) {
     // Generate JWT token
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    // Return token and userId
-    res.status(200).json({ message: 'Login successful!', token, userId: user.id });
+    // Return token, userId, and userType
+    res.status(200).json({
+      message: 'Login successful!',
+      token,
+      userId: user.id,
+      userType: user.userType, // Include userType in the response
+    });
   } catch (error) {
     console.error('Error logging in:', error);
     res.status(500).json({ message: 'Error logging in', error: error.message });

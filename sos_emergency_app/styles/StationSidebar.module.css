@@ -1,0 +1,29 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar h2 {
+    margin-bottom: 20px;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    margin-bottom: 10px;
+  }
+  
+  .sidebar ul li button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+    font-size: 16px;
+  }
+  
+  .sidebar ul li button:hover {
+    color: #0070f3;
+  }

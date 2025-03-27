@@ -32,7 +32,7 @@ export default function Auth() {
 
     if (token && userId && userType) {
       if (userType === 'user') {
-        router.push('/parent'); // Redirect to /parent for users
+        router.push('/user'); // Redirect to /parent for users
       } else if (userType === 'station') {
         router.push('/station'); // Redirect to /station for station users
       } else if (userType === 'super_admin') {
@@ -46,7 +46,6 @@ export default function Auth() {
   // Handle login
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log('Attempting login...');
 
     try {
       const response = await fetch('/api/login', {
@@ -56,7 +55,6 @@ export default function Auth() {
       });
 
       const data = await response.json();
-      console.log('Login response:', data);
 
       if (response.ok) {
         // Store auth token and user details in localStorage
@@ -72,7 +70,7 @@ export default function Auth() {
         }).then(() => {
           // Redirect based on userType after the user clicks "OK" on the success message
           if (data.userType === 'user') {
-            router.push('/parent'); // Redirect to /parent for users
+            router.push('/user'); // Redirect to /parent for users
           } else if (data.userType === 'station') {
             router.push('/station'); // Redirect to /station for station users
           } else if (data.userType === 'super_admin') {
@@ -99,7 +97,6 @@ export default function Auth() {
         }
       }
     } catch (error) {
-      console.error('Login error:', error);
       setLoginError('An error occurred during login');
       Swal.fire({
         icon: 'error',
@@ -112,7 +109,6 @@ export default function Auth() {
   // Handle registration
   const handleRegister = async (e) => {
     e.preventDefault();
-    console.log('Attempting registration...');
 
     if (regPassword !== confirmPassword) {
       setRegError('Passwords do not match');
@@ -142,7 +138,6 @@ export default function Auth() {
       });
 
       const data = await response.json();
-      console.log('Registration response:', data);
 
       if (response.ok) {
         // Show success message and switch to login form
@@ -163,7 +158,6 @@ export default function Auth() {
         });
       }
     } catch (error) {
-      console.error('Registration error:', error);
       setRegError('An error occurred during registration');
       Swal.fire({
         icon: 'error',
@@ -175,7 +169,7 @@ export default function Auth() {
 
   // Switch between login and registration forms
   const switchForm = () => {
-    console.log('Switching form');
+
     setIsLogin(!isLogin);
 
     // Clear all form inputs and errors
@@ -194,7 +188,6 @@ export default function Auth() {
 
   // Handle selection of login or register
   const handleSelection = (isLoginSelection) => {
-    console.log('Form selection:', isLoginSelection ? 'Login' : 'Register');
     setIsLogin(isLoginSelection);
     setShowForm(true); // Show the form after selection
   };
@@ -211,7 +204,6 @@ export default function Auth() {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              console.log('Close button clicked');
               handleClose(); // Call the handleClose function
             }}
             className={styles.closeButton}

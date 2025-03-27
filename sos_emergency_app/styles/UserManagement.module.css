@@ -1,103 +1,121 @@
-.userManagement {
-    padding: 20px;
-  }
-  
-  .userManagement h1 {
-    margin-bottom: 20px;
-  }
-  
-  .userManagement ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .userManagement ul li {
-    margin-bottom: 10px;
-  }
+.section {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
 
-  .userManagement {
-    padding: 20px;
-  }
-  
-  .userManagement h1,
-  .userManagement h2 {
-    margin-bottom: 20px;
-  }
-  
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  .table th,
-  .table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
-  }
-  
-  .table th {
-    background-color: #f4f4f4;
-  }
-  
-  .table button {
-    padding: 5px 10px;
-    background-color: #ff4d4d;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .table button:hover {
-    background-color: #cc0000;
-  }
-  
-  .table select {
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  .editForm {
-    margin-top: 20px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f9f9f9;
-  }
-  
-  .editForm h3 {
-    margin-bottom: 10px;
-  }
-  
-  .editForm label {
-    display: block;
-    margin-bottom: 10px;
-  }
-  
-  .editForm input,
-  .editForm select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  
-  .editForm button {
-    margin-right: 10px;
-    padding: 8px 12px;
-    background-color: #0070f3;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .editForm button[type="button"] {
-    background-color: #ccc;
-  }
-  
-  .editForm button:hover {
-    opacity: 0.9;
-  }
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.formContainer {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 1.5rem;
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.formGroup input,
+.formGroup select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.formActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.formActions button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.formActions button[type="submit"] {
+  background: #4CAF50;
+  color: white;
+}
+
+.formActions button[type="button"] {
+  background: #f44336;
+  color: white;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.table th {
+  background: #f2f2f2;
+}
+
+.table button {
+  padding: 0.25rem 0.5rem;
+  margin-right: 0.5rem;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.table button:first-of-type {
+  background: #2196F3;
+  color: white;
+}
+
+.table button:last-of-type {
+  background: #f44336;
+  color: white;
+}
+/* Add to your UserManagement.module.css */
+.mapContainer {
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.coordinateDisplay {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.leaflet-container {
+  height: 300px;
+  width: 100%;
+}
+
+.leaflet-marker-icon {
+  background-color: #ff0000;
+  border-radius: 50%;
+  border: 2px solid white;
+}

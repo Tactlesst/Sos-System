@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Sidebar from '../pages/Sidebar';
-import Profile from '../pages/profile';
-import Dashboard from '../pages/dashboard';
+import Sidebar from './Sidebar';
+import Profile from './profile';
+import Dashboard from './dashboard';
 import styles from '../styles/Parent.module.css';
 
 export default function Parent() {

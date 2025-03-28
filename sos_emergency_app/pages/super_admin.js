@@ -12,8 +12,20 @@ import styles from '../styles/SuperAdmin.module.css';
 export default function SuperAdmin() {
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [activeComponent, setActiveComponent] = useState('dashboard');
+  const [activeComponent, setActiveComponent] = useState(() => {
+    // Initialize from localStorage if available
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('superAdminActiveComponent') || 'dashboard';
+    }
+    return 'dashboard';
+  });
   const [loading, setLoading] = useState(true);
+
+  // Custom function to set active component and persist to localStorage
+  const handleSetActive = (component) => {
+    setActiveComponent(component);
+    localStorage.setItem('superAdminActiveComponent', component);
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -21,7 +33,6 @@ export default function SuperAdmin() {
       const userId = localStorage.getItem('userId');
       const userType = localStorage.getItem('userType');
 
-      // Redirect if token, userId, or userType is missing or incorrect
       if (!token || !userId || userType !== 'super_admin') {
         toast.error('Access Denied: You do not have permission to access this page.');
         router.push('/auth');
@@ -38,13 +49,13 @@ export default function SuperAdmin() {
         }
 
         const data = await response.json();
-        setUser(data); // Set user data
+        setUser(data);
       } catch (error) {
         console.error('Error fetching user data:', error);
         toast.error('Failed to fetch user data');
         router.push('/auth');
       } finally {
-        setLoading(false); // Stop loading
+        setLoading(false);
       }
     };
 
@@ -52,7 +63,12 @@ export default function SuperAdmin() {
   }, [router]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.loadingSpinner}></div>
+        <p>Loading...</p>
+      </div>
+    );
   }
 
   const renderComponent = () => {
@@ -71,12 +87,15 @@ export default function SuperAdmin() {
   return (
     <div className={styles.superAdminContainer}>
       <div className={styles.sidebarContainer}>
-        <Sidebar onNavigate={setActiveComponent} />
+        <Sidebar 
+          activeComponent={activeComponent}
+          onNavigate={handleSetActive}
+        />
       </div>
       <div className={styles.contentContainer}>
         {renderComponent()}
       </div>
-      <ToastContainer />
+      <ToastContainer position="bottom-right" autoClose={3000} />
     </div>
   );
 }

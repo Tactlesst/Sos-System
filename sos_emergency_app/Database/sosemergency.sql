@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 26, 2025 at 11:11 AM
+-- Generation Time: Mar 28, 2025 at 04:42 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,16 +29,19 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `stations` (
   `id` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
+  `userId` int(11) DEFAULT NULL,
   `name` varchar(255) NOT NULL,
-  `address` varchar(255) NOT NULL,
-  `latitude` decimal(10,8) NOT NULL,
-  `longitude` decimal(11,8) NOT NULL,
-  `type` enum('police','fire','medical','coast_guard','other') NOT NULL DEFAULT 'other',
-  `emergency_contact` varchar(20) NOT NULL,
-  `staffCount` int(11) DEFAULT 5,
+  `location` varchar(255) NOT NULL,
+  `staffCount` int(11) DEFAULT 0,
   `activeOperations` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `stations`
+--
+
+INSERT INTO `stations` (`id`, `userId`, `name`, `location`, `staffCount`, `activeOperations`) VALUES
+(1, 9, 'Cyrus Station', 'Location Name', 5, 2);
 
 -- --------------------------------------------------------
 
@@ -80,8 +83,7 @@ INSERT INTO `users` (`id`, `firstName`, `lastName`, `phone`, `password`, `dob`, 
 (20, 'Station', 'One', '0987654321', 'hashed_password', NULL, 'station'),
 (21, 'Admin', 'Super', '1122334455', 'hashed_password', NULL, 'super_admin'),
 (23, 'John', 'Doe', '1234567892', '$2b$10$5v5Zz7y8e3e4r5t6y7u8i9o0p1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p', '1990-01-01', 'user'),
-(25, '11', '11', '1122', '$2b$10$ENgaF0Fmc22i06hIVJ3Kxub1kcrDJ0PQ4YwnI9YXoQBG6gWbql82y', '2025-03-23', 'user'),
-(26, '11', '11', '11w', '$2b$10$adNWQarHiOLrVWw4xO5fhej56lfJzKfI1hn4aq0ZKaYe5E34FOC/y', '2025-03-26', 'user');
+(25, '11', '11', '1122', '$2b$10$ENgaF0Fmc22i06hIVJ3Kxub1kcrDJ0PQ4YwnI9YXoQBG6gWbql82y', '2025-03-23', 'user');
 
 --
 -- Indexes for dumped tables
@@ -109,13 +111,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `stations`
 --
 ALTER TABLE `stations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Constraints for dumped tables

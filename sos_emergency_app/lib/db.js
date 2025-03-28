@@ -11,4 +11,16 @@ const pool = mysql.createPool({
   queueLimit: 0,
 });
 
+// Add this helper function
+export async function query(sql, params) {
+  const connection = await pool.getConnection();
+  try {
+    const [results] = await connection.query(sql, params);
+    return results;
+  } finally {
+    connection.release();
+  }
+}
+
+// Keep the pool export if needed elsewhere
 export default pool;

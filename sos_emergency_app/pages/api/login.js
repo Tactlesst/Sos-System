@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     if (users.length === 0) {
       return res.status(404).json({ message: 'User not found' });
     }
-
+    
     const user = users[0];
 
     // Verify password

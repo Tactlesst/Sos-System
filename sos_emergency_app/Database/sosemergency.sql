@@ -49,15 +49,15 @@ INSERT INTO `stations` (`id`, `userId`, `name`, `location`, `staffCount`, `activ
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `firstName` varchar(255) NOT NULL,
-  `lastName` varchar(255) NOT NULL,
-  `phone` varchar(20) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `dob` date DEFAULT NULL,
-  `userType` enum('station','super_admin','user') NOT NULL DEFAULT 'user'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  CREATE TABLE `users` (
+    `id` int(11) NOT NULL,
+    `firstName` varchar(255) NOT NULL,
+    `lastName` varchar(255) NOT NULL,
+    `phone` varchar(20) NOT NULL,
+    `password` varchar(255) NOT NULL,
+    `dob` date DEFAULT NULL,
+    `userType` enum('station','super_admin','user') NOT NULL DEFAULT 'user'
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
